@@ -1,9 +1,9 @@
 #include <Arduino.h>
 /**
- * @file main.ino
+ * @file main.cpp
  * @brief Embedded Temperature and Humidity Monitoring using DHT11
- * @author YOUR_NAME
- * @date YYYY-MM-DD
+ * @author Nitin Kumar
+ * @date 2026-02-19
  *
  * @details
  * This program reads environmental data from the DHT11 sensor
@@ -12,15 +12,18 @@
  */
 
 #include <DHT.h>
+#define DHTPIN 2
+#define DHTTYPE DHT11
+DHT dht(DHTPIN, DHTTYPE);
 
-// TODO 1:
-// Define the DHT data pin (Use digital pin 2)
 
-// TODO 2:
-// Define the DHT sensor type (DHT11)
+void setup() {
+    Serial.begin(9600);
+    dht.begin();
+    Serial.println("DHT11 Sensor Initialized");
+}
 
-// TODO 3:
-// Create a DHT object using the defined pin and sensor type
+
 
 void setup() {
 
@@ -36,19 +39,20 @@ void setup() {
 
 void loop() {
 
-    // TODO 7:
-    // Read humidity value from sensor
-
-    // TODO 8:
-    // Read temperature value from sensor
-
-    // TODO 9:
-    // Check if either reading failed using isnan()
-    // If failed, print error message and return
-
-    // TODO 10:
-    // Print formatted temperature and humidity values
-
-    // TODO 11:
-    // Add a 2-second delay before next reading
+    float humidity = dht.readHumidity();
+    float temperature = dht.readTemperature();
+    if (isnan(humidity) || isnan(temperature))
+    {
+        Serial.println(F("Failed to read from DHT sensor!"));
+        delay(2000);
+        return;
+    }
+    Serial.println("Humidity: ");
+    Serial.println(humidity);
+    Serial.println(" %  |  ");
+    Serial.println("Temperature: ");
+    Serial.println("Temperature: ");
+    Serial.println(temperature);
+    Serial.println(" C ");
+    delay(2000);
 }
